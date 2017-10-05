@@ -1,54 +1,454 @@
-1.stationary product
+Editable table
+Code:
+package prac4;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import javax.swing.JApplet;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+public class EditTable extends JApplet {
+	JTable jt; JScrollPane jsp;
+ public void init() {
+		Container c = getContentPane();
+		c.setLayout(new BorderLayout());
+		String cols[] = {"Employee No", "Employee Name", "Employee Salary", Designation"};
+		Object data[][] = {{"1", "Abhishek", "1000", "Robot Analyst"},
+				{"2", "Chitti", "1000", "Principal"},
+				{"3", "AlanWalker", "1000", "HOD"},};		
+		jt = new JTable(data, cols);
+		jsp = new JScrollPane(jt);
+		c.add(jsp);
+	}
+}
 
+
+Popup menu
+Code:
+import java.awt.*;  
+import java.awt.event.*;  
+class PopupMenuExample  
+{  
+     PopupMenuExample(){  
+         final Frame f= new Frame("PopupMenu Example");  
+         final PopupMenu popupmenu = new PopupMenu("Edit");   
+         MenuItem cut = new MenuItem("Cut");  
+         cut.setActionCommand("Cut");  
+         MenuItem copy = new MenuItem("Copy");  
+         copy.setActionCommand("Copy");  
+         MenuItem paste = new MenuItem("Paste");  
+         paste.setActionCommand("Paste");      
+         popupmenu.add(cut);  
+         popupmenu.add(copy);  
+         popupmenu.add(paste);        
+         f.addMouseListener(new MouseAdapter() {  
+            public void mouseClicked(MouseEvent e) {              
+                popupmenu.show(f , e.getX(), e.getY());  
+            }                 
+         });  
+         f.add(popupmenu);   
+         f.setSize(400,400);  
+         f.setLayout(null);  
+         f.setVisible(true);  
+     }  
+public static void main(String args[])  
+{  
+        new PopupMenuExample();  
+}  
+}  
+
+
+Jtable with Database
+Code:
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+
+
+public class EmployeeDetails {
+	
+	private boolean status;
+
+	public EmployeeDetails(String title) {
+
+		// Creating Window using JFrame
+		JFrame frame = new JFrame();
+		frame.setTitle(title);
+		frame.setSize(800, 500);
+
+		// Adding Table View
+		frame.add(getTablePanel());
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+
+	private JPanel getTablePanel() {
+
+		JPanel tableJPanel = new JPanel();
+		
+		tableJPanel.setLayout(new BorderLayout());
+		
+		// Column Header
+		String[] columns = {
+
+		"Ëmployee ID", "Employee Name", "Employee Age",
+				"Employee Qualification", "Employee Address" };
+
+		// Getting Data for Table from Database
+		Object[][] data = getEmployeeDetails();
+
+		// Creating JTable object passing data and header
+		JTable employeeTable = new JTable(data, columns);
+		
+		
+		tableJPanel.add(employeeTable.getTableHeader(), BorderLayout.NORTH);
+		tableJPanel.add(employeeTable, BorderLayout.CENTER);
+		
+		return tableJPanel;
+	}
+
+	private Object[][] getEmployeeDetails() {
+
+		Object[][] data = null;
+
+		final String DRIVER_NAME = "com.mysql.jdbc.Driver";
+		final String CONNECTION_URL = "jdbc:mysql://localhost:3306/ems";
+		final String USERNAME = "root";
+		final String PASSWORD = "";
+
+		final String QUERY = "Select empId, empName, empAge, empQualification, empAddress from employee_details";
+
+		try {
+
+			// Loading the Driver
+			Class.forName(DRIVER_NAME);
+
+			// Getting Database Connection Object by Passing URL, Username and Password
+			Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, PASSWORD);
+
+			Statement statement = connection.createStatement();
+
+			ResultSet rs = statement.executeQuery(QUERY);
+
+			int rowCount = getRowCount(rs); // Row Count
+			int columnCount = getColumnCount(rs); // Column Count
+
+			data = new Object[rowCount][columnCount];
+
+			// Starting from First Row for Iteration
+			rs.beforeFirst();
+
+			int i = 0;
+			
+			while (rs.next()) {
+
+				int j = 0;
+
+				data[i][j++] = rs.getInt("empId");
+				data[i][j++] = rs.getString("empName");
+				data[i][j++] = rs.getInt("empAge");
+				data[i][j++] = rs.getString("empQualification");
+				data[i][j++] = rs.getString("empAddress");
+
+				i++;
+			}
+
+			status = true;
+			
+			// Closing the Resources;
+			statement.close();
+			connection.close();
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		return data;
+	}
+
+	// Method to get Row Count from ResultSet Object
+	private int getRowCount(ResultSet rs) {
+
+		try {
+			
+			if(rs != null) {
+				
+				rs.last();
+				
+				return rs.getRow(); 
+			}
+			
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+	// Method to get Column Count from ResultSet Object
+	private int getColumnCount(ResultSet rs) {
+
+		try {
+
+			if(rs != null)
+				return rs.getMetaData().getColumnCount();
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		
+		return (status) ? "Data Listed Successfully" : "Application Error Occured";
+	}
+	
+	public static void main(String[] args) {
+
+		String title = "Employee Details Table";
+
+		EmployeeDetails employeeDetails = new EmployeeDetails(title);
+
+		System.out.println(employeeDetails);
+	}
+}
+
+Jtree
+Code:
+import javax.swing.*;  
+import javax.swing.tree.DefaultMutableTreeNode;  
+public class TreeExample {  
+JFrame f;  
+TreeExample(){  
+    f=new JFrame();   
+    DefaultMutableTreeNode style=new DefaultMutableTreeNode("Style");  
+    DefaultMutableTreeNode color=new DefaultMutableTreeNode("color");  
+    DefaultMutableTreeNode font=new DefaultMutableTreeNode("font");  
+    style.add(color);  
+    style.add(font);  
+    DefaultMutableTreeNode red=new DefaultMutableTreeNode("red");  
+    DefaultMutableTreeNode blue=new DefaultMutableTreeNode("blue");  
+    DefaultMutableTreeNode black=new DefaultMutableTreeNode("black");  
+    DefaultMutableTreeNode green=new DefaultMutableTreeNode("green");  
+    color.add(red); color.add(blue); color.add(black); color.add(green);      
+    JTree jt=new JTree(style);  
+    f.add(jt);  
+    f.setSize(200,200);  
+    f.setVisible(true);  
+}  
+public static void main(String[] args) {  
+    new TreeExample();  
+}}  
+
+
+Combobox
+Code:
+import javax.swing.*;    
+import java.awt.event.*;    
+public class ComboBoxExample {    
+JFrame f;    
+ComboBoxExample(){    
+    f=new JFrame("ComboBox Example");   
+    final JLabel label = new JLabel();          
+    label.setHorizontalAlignment(JLabel.CENTER);  
+    label.setSize(400,100);  
+    JButton b=new JButton("Show");  
+    b.setBounds(200,100,75,20);  
+    String languages[]={"C","C++","C#","Java","PHP"};        
+    final JComboBox cb=new JComboBox(languages);    
+    cb.setBounds(50, 100,90,20);    
+    f.add(cb); f.add(label); f.add(b);    
+    f.setLayout(null);    
+    f.setSize(350,350);    
+    f.setVisible(true);       
+    b.addActionListener(new ActionListener() {  
+        public void actionPerformed(ActionEvent e) {       
+String data = "Programming language Selected: "   
+   + cb.getItemAt(cb.getSelectedIndex());  
+label.setText(data);  
+}  
+});           
+}    
+public static void main(String[] args) {    
+    new ComboBoxExample();         
+}    
+}
+
+
+Confirm on exit
+Code:
+package test;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
-class StationeryChoice extends JFrame implements ListSelectionListener {
+public class ConfirmExitDialog extends JFrame {
 
-    JList jl;
-    JLabel l2;
-    Container c;
+    public ConfirmExitDialog() {
 
-    StationeryChoice() {
+        super("Confirm Exit Dialog Example");
+        this.setSize(350, 150);
+        Container contentPane = this.getContentPane();
+        contentPane.setLayout(new BorderLayout());
+        JLabel label1 = new JLabel("Confirm Exit Dialog Example", JLabel.LEFT);
+        contentPane.add(label1, BorderLayout.SOUTH);
+        
+    }
 
-        c = getContentPane();
-        c.setLayout(new BorderLayout());
-        setTitle("Stationery list");
-        setSize(200, 200);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    protected void processWindowEvent(WindowEvent e) {
 
-        String s[] = {"pen", "pencil", "scale", "books", "papers"};
-        jl = new JList(s);
-        l2 = new JLabel();
-        jl.addListSelectionListener(this);
-        c.add(jl, BorderLayout.WEST);
-        c.add(l2, BorderLayout.CENTER);
-    } 
-
-    public void valueChanged(ListSelectionEvent le) {
-        String s = (String) jl.getSelectedValue();
-        if (s.equals("Pen")) {
-            l2.setText("Price of " + s + " is 10");
-        } else if (s.equals("pencil")) {
-            l2.setText("Price of " + s + " is 5");
-        } else if (s.equals("scale")) {
-            l2.setText("Price of " + s + " is 20");
-        } else if (s.equals("books")) {
-            l2.setText("Price of " + s + " is 550");
+        if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+        
+            int exit = JOptionPane.showConfirmDialog(this, "Are you sure?");
+            if (exit == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+            
         } else {
-            l2.setText("Price of " + s + " is 48");
+
+            super.processWindowEvent(e);
         }
     }
 
-    public static void main(String args[]) {
-        new StationeryChoice();
-    }}
+    public static void main(String[] args) {
+        ConfirmExitDialog mainFrame = new ConfirmExitDialog();
+        mainFrame.setVisible(true);
+    }
+    
+}
 
 
-2.Split pane planet
+Simpleattributeset
+Code:
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
+public class JavaJTextPaneExample {
+
+	public static void main(String args[]) throws BadLocationException {
+		
+		JFrame jf = new JFrame("StyledText");
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container cp = jf.getContentPane();
+
+		JTextPane pane = new JTextPane();
+		SimpleAttributeSet set = new SimpleAttributeSet();
+		StyleConstants.setBold(set, true);
+
+		pane.setCharacterAttributes(set, true);
+		pane.setText("JavaScan.com");
+
+		set = new SimpleAttributeSet();
+		StyleConstants.setItalic(set, true);
+		StyleConstants.setForeground(set, Color.red);
+		StyleConstants.setBackground(set, Color.blue);
+
+		Document doc = pane.getStyledDocument();
+		doc.insertString(doc.getLength(), "Swing ", set);
+
+		set = new SimpleAttributeSet();
+		StyleConstants.setFontSize(set, 24);
+
+		doc.insertString(doc.getLength(), "Tutorial", set);
+
+		JScrollPane scrollPane = new JScrollPane(pane);
+		cp.add(scrollPane, BorderLayout.CENTER);
+
+		jf.setSize(400, 300);
+		jf.setVisible(true);
+		
+	}
+}
+
+
+
+Jprogressbar
+Code:
+import javax.swing.*;    
+public class ProgressBarExample extends JFrame{    
+JProgressBar jb;    
+int i=0,num=0;     
+ProgressBarExample(){    
+jb=new JProgressBar(0,2000);    
+jb.setBounds(40,40,160,30);         
+jb.setValue(0);    
+jb.setStringPainted(true);    
+add(jb);    
+setSize(250,150);    
+setLayout(null);    
+}    
+public void iterate(){    
+while(i<=2000){    
+  jb.setValue(i);    
+  i=i+20;    
+  try{Thread.sleep(150);}catch(Exception e){}    
+}    
+}    
+public static void main(String[] args) {    
+    ProgressBarExample m=new ProgressBarExample();    
+    m.setVisible(true);    
+    m.iterate();    
+}    
+}    
+
+
+Jcolorchooser
+Code:
+package test;
+import javax.swing.*;  
+import java.awt.*;  
+import java.awt.event.*;  
+public class ColorChooserExample extends JFrame implements ActionListener{  
+JFrame f;  
+JButton b;  
+JTextArea ta;  
+ColorChooserExample(){  
+    f=new JFrame("Color Chooser Example.");  
+    b=new JButton("Pad Color");  
+    b.setBounds(200,250,100,30);  
+    ta=new JTextArea();  
+    ta.setBounds(10,10,300,200);  
+    b.addActionListener(this);  
+    f.add(b);f.add(ta);  
+    f.setLayout(null);  
+    f.setSize(400,400);  
+    f.setVisible(true);  
+}  
+public void actionPerformed(ActionEvent e){  
+    Color c=JColorChooser.showDialog(this,"Choose",Color.CYAN);  
+    ta.setBackground(c);  
+}  
+public static void main(String[] args) {  
+    new ColorChooserExample();  
+}  
+}
+
+
+Splitpane planets
+Code:
 import java.awt.*;
 import java.applet.*;
 import javax.swing.*;
@@ -105,168 +505,70 @@ public class abc extends JFrame implements ListSelectionListener {
     }
 
 
-3.Editable Table, describing student details.
 
-jv1234.java (Servlet file)
-
-package jv2134;
+Jtabbedpane
+package test;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import java.awt.*;
-import javax.swing.JApplet;
-import javax.swing.JTable;
-import javax.swing.*;
-public class jv2134 extends JApplet {
-JTable jt;
-JScrollPane jsp;
-@Override
-public void init()
+import java.awt.event.*;
+
+class AddJTabbedPane 
 {
-Container c=getContentPane();
-c.setLayout(new BorderLayout());
-String colHeads[]={"s_id","s_Name","course","grade"};
-Object data[][]={ {"1","priyanka","tybscit","a"},
-{"2","parag","tybscit","o"},
-{"3","aarti","sybscit","o"},
-{"4","khyati","sybscit","a"},
-{"5","vijay","tybscit","b"},
-{"6","alpesh","sybscit","a"},
-{"7","sneha","fybscit","o"},
-{"8","jenish","sybscit","a"},
-{"9","krisha","fybscit","b"},
-{"10","abhi","tybscit","o"}};
-jt=new JTable(data,colHeads);
-jsp=new JScrollPane(jt);
-c.add(jsp);
-}
-}
+	JTabbedPane tp;
+	JLabel lab1, lab2, lab3, lab4, lab5, lab6, lab7, lab8;
+	JPanel fruit, vegetable;
+	JButton btn1, btn2;
+	JFrame frame;
+	public void createUI()
+	{
+		frame=new JFrame("JTabbedPane Example");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		fruit = new JPanel(new GridLayout(6,2));
+		lab1=new JLabel("Apple");
+		lab2=new JLabel("Orange");
+		lab3=new JLabel("Papaya");
+		lab4=new JLabel("Pine Apple");
+		fruit.add(lab1);
+		fruit.add(lab2);
+		fruit.add(lab3);
+		fruit.add(lab4);
 
-EJB app SI and CI
+		vegetable = new JPanel(new GridLayout(6,2));
+		lab5=new JLabel("Cauliflower");
+		lab6=new JLabel("Brinjal");
+		lab7=new JLabel("Peas");
+		lab8=new JLabel("Lady finger");
+		vegetable.add(lab5);
+		vegetable.add(lab6);
+		vegetable.add(lab7);
+		vegetable.add(lab8);
+		
+		tp=new JTabbedPane();
+        Container pane = frame.getContentPane();
+		pane.add(tp);
+		tp.addTab("Fruit",fruit);
+		tp.addTab("Vegetable",vegetable);
 
-//Index.html
+		frame.setSize(200,200);
+		frame.setVisible(true);
 
-<html>
-<head>
-<title>java</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-<div>Enter the detail</div>
-<form method="post" action="n17">
-principal : <input type="text" name="t1"><br>
-<br>
-rate : <input type="text" name="t2"><br>
-<br>
-no. of years : <input type="text" name="t3">
-<br>
-<input type="submit" value="submit">
-</form>
-</body>
-</html>
-
-//n17.java (Servlet file)
-
-package n17;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.ejb.EJB;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import s1.s1;
-public class n17 extends HttpServlet {
-@EJB
-private s1 s1;
-protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-throws ServletException, IOException {
-response.setContentType("text/html;charset=UTF-8");
-try (PrintWriter out = response.getWriter()) {
-float pt=Float.parseFloat(request.getParameter("t1"));
-float rt=Float.parseFloat(request.getParameter("t2"));
-float nt=Float.parseFloat(request.getParameter("t3"));
-float jt=s1.SI(pt, nt, rt);
-out.println("simple intrest\n"+jt );
-double ct=s1.CI(pt, nt, rt);
-out.println("\n compount interest"+ct);
-}
-}
-}
-
-
-//s1.java (EJB file)
-
-package s1;
-import javax.ejb.Stateless;
-@Stateless
-public class s1 {
-public double CI(float p,float r,float n)
-{
-double num=p*Math.pow(1+r/100, n);
-return num;
-}
-public float SI(float p, float n, float r)
-{
-float j=p*n*r;
-return j;
-}
-}
-
-    
-HttpServletRequest and HttpServletResponse.
-
-<html>
-    <head>
-        <title>MCQ Test</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form method="post" action="Valid">
-            <h1> Java is developed by? </h1>
-            <br>
-            <input type="radio" name="r1" value="sun"/>sun
-            <input type="radio" name="r1" value="microsoft"/>microsoft
-            <br/>
-            <input type="submit" value="check"/>
-        </form>
-    </body>
-</html>
-
-//Valid.java
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-@WebServlet(urlPatterns = {"/Valid"})
-public class Valid extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter pw = response.getWriter()) {
-                        response.setContentType("text/html;charset=UTF-8");
-                        String s = request.getParameter("r1");
-            if (s.equals("sun")) {
-                pw.println("correct");
-
-            } else {
-                pw.println("WrongAnswer");
-            }
-            pw.close();
-        }
-    }
-
+	}	
+	public static void main(String[] args) 
+	{
+		AddJTabbedPane tbp = new AddJTabbedPane();
+		tbp.createUI();		
+	}
 }
 
 
 Calculator Servlet
-
+Code:
 //index.html
 <!DOCTYPE html>
 <html>
@@ -325,306 +627,203 @@ public class calculator extends HttpServlet {
     }}
 
 
-jsp app Registration Details and Store it in the database.
-
-//Login.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+Question and answer
+Question.html
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <form name="f1" method="Post" action="Validation.jsp">
-            Name:
-            <input type="text" name="t1"/> <br> <br/>
-            Roll_no:
-            <input type="text" name="t2"/> <br> <br/>
-            Address:
-            <input type="text" name="t3"/> <br> <br/>
-            <input type="submit" value="submit">
-        </form>
-    </body>
-</html>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Question</title>
+     </head>
+       <body>
+            <h1>Question</h1>
+            <form action="Answer" method="post">
+                <h1>Most Popular Search Engine?</h1>
+                <input type="radio" name="se" value="y">Yahoo<br />
+                <input type="radio" name="se" value="b">Bing<br />
+                <input type="radio" name="se" value="g">Google<br />
+                <input type="submit" name="submit">
+            </form> 
 
-//Validation.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.sql.*"%>
-<% String a, b, c;
-    a = request.getParameter("t1");
-    b = request.getParameter("t2");
-    c = request.getParameter("t3");
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "root", "root");
-        System.out.println("Connection Succefull");
-        String q = "insert into details(Name,Roll_No,Address) values(?,?,?)";
-        PreparedStatement ps = con.prepareStatement(q);
-        ps.setString(1, a);
-        ps.setString(2, b);
-        ps.setString(3, c);
-        ps.executeUpdate();
-        ps.close();
-        con.close();
-        out.println("records inserted");
-    } catch (Exception E) {
-        System.out.println(E.getMessage());
-    }%> 
+        </body>
+    </html>
 
-
-jsp application to authenticate user login as per the registration details.
-
-//index.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>	
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Register Page</title>
-    </head>
-    <body>
-        <form method="Post" action="check.jsp">
-            <b> username: </b>
-            <input type="text" name="n"> <br/>
-            <b> password: </b>
-            <input type="password" name="p"> <br/>
-            <b>  confirm password: </b>
-            <input type="password" name="cp"> <br/>
-            <b> address: </b>
-            <textarea name="a" rows="5" cols="10">            
-            </textarea>  <br/>
-            <input type="submit" value="register">
-        </form>
-    </body>
-</html>
-
-
-//check.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Check Page</title>
-    </head>
-    <body>
-        <%
-            String s1 = request.getParameter("p");
-            String s2 = request.getParameter("cp");
-            if (s1.equals(s2)) {
-        %>
-        <jsp:forward page="Login2.jsp"/>
-        <%
-        } else {
-        %>
-        <jsp:forward page="error.jsp"/>
-        <%
-            }
-        %>
-    </body>
-</html>
-
-
-//Login2.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <form method="post" action="index.html">
-            <b> Username </b>
-            <input type="text"name="u"> <br/>
-            <b> Password </b>
-            <input type="password"name="v"> <br/>
-            <input type="button" value="login">
-        </form>   
- </body>
-</html>
-
-
-//error.jsp
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <form method="post" action="">
-            <b> Password and confirm password didn't match. </b>
-        </form>   </body>
-</html>
-
-
-Session.
-
-//Index.jsp
-
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-      
-<form method="post" action="login1">
-
-Username: <input type="text" name="t1">
-<br>
-Password: <input type="password" name="t2">
-<br>
-<input type="submit" value="Login">
-</form>
-    </body>
-</html>
-
-//login.java
-
+Answer.java
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-public class login1 extends HttpServlet {
-  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+public class Answer extends HttpServlet {    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-              String b="123kc";
-           String usr=request.getParameter("t1");
-            String pwd=request.getParameter("t2");
-            if( b.equals(pwd)){
-			HttpSession session = request.getSession();
-			session.setAttribute("user", usr);
-		response.sendRedirect("LoginSuccess.jsp");
-		}else{
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.html");
-			
-                        out.println("<font color=red>Either user name or password is wrong.</font>");
-			rd.include(request, response);
-        }
-        }
-    }
-
+        PrintWriter out = response.getWriter();
+        try { String a;
+            a=request.getParameter("se");
+        if(a.equals("g")) out.print("!@Correct Answer@!");
+        else out.print("Please Try Again!");
+        } finally { out.close();}  
+    }	
 }
 
-//LoginSuccessful.jsp
+
+RequestDispatcher
+First page
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>success Page</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <%
-            String abc;
-            abc = (String) session.getAttribute("user");
-            out.println("Hii!!  "+abc);
-            %>
-    </body>
-</html>
-
-
-
-RequestDispatcher.
-
-//Index.html
-
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form method="post" action="login">
-            Username:
-            <br>
+        <h1>Rquest dispatcher</h1>
+        <form name="f1" action="rrd2.jsp" method="post">
             <input type="text" name="t1">
-            <br>
-            Password:
-            <br>
-              <input type="password" name="t2">
-              <br>
-              <input type="submit" name="b1" value="login">
-        </form>
+            <input type="submit" name="s1">            
+        </form>     
+            </body></html>
+
+Forward page
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <h1>Hello World! finally. this is called by forward</h1>
     </body>
 </html>
 
-//login.java
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-public class login extends HttpServlet {
-  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String s=request.getParameter("t2");
-            if(s.equals("123kc"))
-            {
-                RequestDispatcher rd= request.getRequestDispatcher("welcome");
-                rd.forward(request,response);
-            }
-            else
-            {
-                out.println("sorry wrong password");
-            }
-        }
-    }
-
+Included page
+<%@page import="javax.servlet.*" %>
+<%String a=request.getParameter("t1");
+try{
+RequestDispatcher d=null;
+if(a.equals("abcdefgji")){ d=request.getRequestDispatcher("move.jsp");d.forward(request, response);
 }
-//welcome.java
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-public class welcome extends HttpServlet {
-protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-           String a=request.getParameter("t1");
-           out.print("welcome  "+a);
-           
-        }
-    }
-}
+else{d=request.getRequestDispatcher("rrd2"); d.include(request, response);}}
+catch(Exception e){e.getMessage();}%>
+<html>
+    <head>
+        <title>           
+        </title>
+    </head>
+    <body>
+        <h1>this is called by include</h1>
+    </body></html>
 
 
-Hello World in JSF.
 
-//Index.xhtml
+Jsf built in validation
+Code:
+mobile.xhtml
 
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:h="http://java.sun.com/jsf/html">
 <h:head>
-<title>jsf</title>
 </h:head>
 <h:body>
-<f:view>
-<h1><h:outputText value="Hello World!" /></h1>
-</f:view>
+	<h3>Add Mobile Details</h3>
+	<h:form>
+		<h:panelGrid columns="3">
+			<h:outputLabel for="mname">Mobile Name:</h:outputLabel>
+			<h:inputText id="mname" required="true"
+				requiredMessage="Mobile Name is mandatory"></h:inputText>
+			<br>
+			<br>
+
+			<h:outputLabel for="color">Color:</h:outputLabel>
+			<h:inputText id="color" required="true"></h:inputText>
+			<br>
+			<br>
+
+			<h:outputLabel for="model">Model Number:</h:outputLabel>
+			<h:inputText id="model"></h:inputText>
+			<br>
+			<br>
+
+			<h:commandButton value="Submit"></h:commandButton>
+		</h:panelGrid>
+	</h:form>
 </h:body>
 </html>
+
+mob.xhtml
+
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+</h:head>
+<h:body>
+	<h3>Add Mobile Details</h3>
+	<h:form>
+		<h:outputLabel for="mno">Model Number:</h:outputLabel>
+		<h:inputText id="mno" value="#{mobile.mno}" required="true" size="4"
+			disabled="#{mobile.mno}" validator="#{mobile.validateModelNo}">
+		</h:inputText>
+		<h:commandButton value="Submit"></h:commandButton>
+	</h:form>
+</h:body>
+</html>
+
+Mobile.java
+
+package com.journaldev.jsf.bean;
+
+import java.io.Serializable;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+
+@ManagedBean
+@SessionScoped
+public class Mobile implements Serializable {
+
+	private static final long serialVersionUID = -7250065889869767422L;
+
+	// @NotNull(message="Please enter the model number")
+	private String mno;
+
+	public String getMno() {
+		return mno;
+	}
+
+	public void setMno(String mno) {
+		this.mno = mno;
+	}
+
+	public void validateModelNo(FacesContext context, UIComponent comp,
+			Object value) {
+
+		System.out.println("inside validate method");
+
+		String mno = (String) value;
+
+		if (mno.length() < 4) {
+			((UIInput) comp).setValid(false);
+
+			FacesMessage message = new FacesMessage(
+					"Minimum length of model number is 4");
+			context.addMessage(comp.getClientId(context), message);
+
+		}
+
+	}
+
+}
+
+
 
 Create Login Page in JSF.
 
@@ -742,34 +941,202 @@ return "fail";
 }
 }
 
-EJB app Room Reservation System.
+
+
+) Develop a Jsp  application to accept Registration Details and Store it in the database.
+Register.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Register</title>
+    </head>
+    <body>
+        <form action="register.jsp" method="post">
+          NAME: <input type="text" name="name">
+          ROLL NO: <input type="text" name="rollno">
+          PASSWORD:  <input type="password" name="pass">	
+          <input type="submit" name="submit">
+        </form>
+    </body>
+</html>
+
+Register.jsp
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@page import="java.sql.*"%>
+<% 
+String name, pass; int rollno;
+name=request.getParameter("name");
+rollno=Integer.parseInt(request.getParameter("rollno"));
+pass=request.getParameter("pass");
+try{
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/stud","root","root");
+    String query="insert into detail values(?,?,?)";
+    PreparedStatement ps=con.prepareStatement(query);
+    ps.setString(1,name);
+    ps.setInt(2,rollno);
+    ps.setString(3,pass);
+    ps.executeUpdate();
+    con.close();	
+    ps.close();
+    out.println("Registered Successfully.");
+}catch(Exception e){} %>
+
+
+) Develop a jsp application to authenticate user login as per the registration details. If login success the forward user to Index page otherwise show login failure message.
+Login.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Login Form</title>
+    </head>
+    <body>
+          <h1>Login</h1>
+          <form action="login.jsp" method="post">
+          Username: <input type="text" name="username" /><br /> 
+          PASSWORD:  <input type="password" name="password" /><br />
+          <input type="submit" name="submit" />
+        </form>
+    </body>
+</html>
+
+Login.jsp
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@page import="java.sql.*"%>
+<% String username, password;
+username = request.getParameter("password");
+password = request.getParameter("username");
+try{
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/stud","root","root");
+    String query="select * from detail where username=? and password=?";
+    PreparedStatement ps=con.prepareStatement(query);
+           ps.setString(1, username);
+           ps.setString(2, password);
+           ResultSet result=ps.executeQuery();
+           String u, p;
+           while(result.next()){
+             u=result.getString("username");
+             p=result.getString("password");             
+             if(u.equals(username) && p.equals(password)) out.print("Login Successful.");
+             else out.print("Login Failed");
+           } 
+           con.close();
+           ps.close();
+} 
+catch(Exception e){} %>
+
+
+Applet mouse listeners events
+Code:
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+/*
+<applet code="Mouse" width=500 height=500>
+</applet>
+*/
+public class Mouse extends Applet
+implements MouseListener,MouseMotionListener
+{
+	int X=0,Y=20;
+	String msg="MouseEvents";
+	public void init()
+	{
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		setBackground(Color.black);
+		setForeground(Color.red);
+	}
+	public void mouseEntered(MouseEvent m)
+	{
+		setBackground(Color.magenta);
+		showStatus("Mouse Entered");
+		repaint();
+	}
+	public void mouseExited(MouseEvent m)
+	{
+		setBackground(Color.black);
+		showStatus("Mouse Exited");
+		repaint();
+	}
+	public void mousePressed(MouseEvent m)
+	{
+		X=10;
+		Y=20;
+		msg="NEC";
+		setBackground(Color.green);
+		repaint();
+	}
+	public void mouseReleased(MouseEvent m)
+	{
+		X=10;
+		Y=20;
+		msg="Engineering";
+		setBackground(Color.blue);
+		repaint();
+	}
+	public void mouseMoved(MouseEvent m)
+	{
+		X=m.getX();
+		Y=m.getY();
+		msg="College";
+		setBackground(Color.white);
+		showStatus("Mouse Moved");
+		repaint();
+	}
+	public void mouseDragged(MouseEvent m)
+	{
+		msg="CSE";
+		setBackground(Color.yellow);
+		showStatus("Mouse Moved"+m.getX()+" "+m.getY());
+		repaint();
+	}
+	public void mouseClicked(MouseEvent m)
+	{
+		msg="Students";
+		setBackground(Color.pink);
+		showStatus("Mouse Clicked");
+		repaint();
+	}
+	public void paint(Graphics g)
+	{
+		g.drawString(msg,X,Y);
+	}
+}
+
+
+EJB app SI and CI
 
 //Index.html
+
 <html>
 <head>
-<title>Reservation of room </title>
+<title>java</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<form method ="post" action="bookingroom">
-<h1> Reservation form </h1>
-Booked by : <input type="text" name="t1">
+<div>Enter the detail</div>
+<form method="post" action="n17">
+principal : <input type="text" name="t1"><br>
 <br>
-contact number : <input type="text" name="t2">
+rate : <input type="text" name="t2"><br>
 <br>
-arrival date : <input type="text" name="t3">
+no. of years : <input type="text" name="t3">
 <br>
-departure date : <input type="text" name="t4">
-<br>
-<input type="submit" value="confirm your booking">
+<input type="submit" value="submit">
 </form>
 </body>
 </html>
 
+//n17.java (Servlet file)
 
-//Bookingroom.java (Servlet file)
-
+package n17;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -777,455 +1144,79 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import reservation.room;
-public class bookingroom extends HttpServlet {
+import s1.s1;
+public class n17 extends HttpServlet {
 @EJB
-private room room;
+private s1 s1;
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
 response.setContentType("text/html;charset=UTF-8");
 try (PrintWriter out = response.getWriter()) {
-String n=request.getParameter("t1");
-String nu=request.getParameter("t2");
-String a=request.getParameter("t3");
-String d=request.getParameter("t4");
-room.ins(n, nu, a, d);
-out.println("your room is booked");
+float pt=Float.parseFloat(request.getParameter("t1"));
+float rt=Float.parseFloat(request.getParameter("t2"));
+float nt=Float.parseFloat(request.getParameter("t3"));
+float jt=s1.SI(pt, nt, rt);
+out.println("simple intrest\n"+jt );
+double ct=s1.CI(pt, nt, rt);
+out.println("\n compount interest"+ct);
 }
 }
 }
 
-//Room.java (EJB file)
 
-package reservation;
-import javax.ejb.Stateless;
-import static java.lang.System.out;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//s1.java (EJB file)
+
+package s1;
 import javax.ejb.Stateless;
 @Stateless
-public class room {
-public void ins(String name ,String num,String ad, String dd)
+public class s1 {
+public double CI(float p,float r,float n)
 {
-try
+double num=p*Math.pow(1+r/100, n);
+return num;
+}
+public float SI(float p, float n, float r)
 {
-Class.forName("com.mysql.jdbc.Driver");
-Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/book","root","niki");
-String q="insert into student1 values(?,?,?,?)";
-PreparedStatement ps=con.prepareStatement(q);
-ps.setString(1,name);
-ps.setString(2,num);
-ps.setString(3,ad);
-ps.setString(4,dd);
-ps.executeUpdate();
-con.close();
-ps.close();
-out.println("records inserted");
-}
-catch(Exception E)
-{
-System.out.println(E.getMessage());
-}
+float j=p*n*r;
+return j;
 }
 }
 
 
-EJB app convert temp into Farenhiet or Celsius.
-//Index.html
-<html>
-    <head>
-        <title> Convert </title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form name="f1" action="rup" method="post">
-            Enter Temperature in Farenheit
-            <br>
-            <input type="text" name="t1">
-            <br>
-            <br>
-          Enter Temperature in Celsius
-            <br>
-            <input type="text" name="t2">
-            <br>
-            <br>
-            <input type="submit" name="b1" value="click">
-            
-            
-        </form>
-    </body>
-</html>
+Session ejb
+Code:
+ExampleBeanClient.java
 
-//rup.java(servlet)
+import java.util.Properties;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.ejb.EJB;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import rupp.rupp;
-public class rup extends HttpServlet {
- @EJB
-    private rupp rupp;
-         protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
-            int f=(int) Double.parseDouble(request.getParameter("t1"));
-             int ce=(int) Double.parseDouble(request.getParameter("t2"));
-            Double c=rupp.far(f);
-            out.println(f +" degree farenheit is equal to "+ c +  " degree celsius");
-           
-            out.println("-------------------------------");
-            
-            
-            Double fa=rupp.cel(ce);
-             out.println(ce +" degree celsius is equal to "+ f +  " degree farenheit");
-            
-         
-        }
-    }
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import com.ejbs.ExampleBeanRemote;
+
+public class ExampleBeanClient {
+
+public static void main(String[] args) {
+try {
+Properties props = new Properties();
+props.setProperty("java.naming.factory.initial",
+"org.jnp.interfaces.NamingContextFactory");
+props.setProperty("java.naming.factory.url.pkgs",
+"org.jboss.naming");
+props.setProperty("java.naming.provider.url", "127.0.0.1:1099");
+
+InitialContext ctx = new InitialContext(props);
+ExampleBeanRemote exampleBean = (ExampleBeanRemote) ctx
+.lookup("ExampleBean/remote");
+System.out.println("Message from Bean :" + exampleBean.getMessage());
+} catch (NamingException e) {
+e.printStackTrace();
 }
-//rupp.java (EJB)
-
-package rupp;
-import javax.ejb.Stateless;
-@Stateless
-public class rupp {
- public double far(double f)
- {
-     double c = (5.0 / 9.0) * (f - 32);
-     return c; 
- }
- public double cel(double ce)
- {
-    double f = (9.0 / 5.0) * (ce + 32);
-     return ce; 
- }
-}
-
-EJB app to convert INR into Dollar/Yen/Euro/Pound.
-
-//Index.html
-<html>
-    <head>
-        <title> Convert </title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form name="f1" action="rup" method="post">
-            Enter amount in Rupees 
-            <br>
-            <input type="text" name="t1">
-            <br>
-            <br>
-            
-            Convert Rupees into:
-            <br>
-            <br>
-            
-           
-            <select name="s1">
-                <option> Dollar</option>
-                <option> Euro</option>
-                <option> Yen</option>
-                <option> Pound</option>
-            </select>
-            <br>
-            <br>
-            <input type="submit" name="b1" value="click">
-                     
-         </form>
-    </body>
-</html>
-
-
-//rup.java (servlet file)
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.ejb.EJB;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import rupp.rupp;
-
-
-public class rup extends HttpServlet {
-
-    @EJB
-    private rupp rupp;
-
-    
-     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
-            int amt=Integer.parseInt(request.getParameter("t1"));
-            String a= request.getParameter("s1");
-            if(a.equals("Dollar"))
-            {
-                int z=rupp.dol(amt);
-                out.println(amt+" rupees is "+z+" dollars");
-            }
-            else if(a.equals("Euro"))
-            {
-                int z=rupp.eur(amt);
-                 out.println(amt+" rupees is "+z+" euros");
-            }
-             else if(a.equals("Yen"))
-            {
-                float z=rupp.yena(amt);
-                 out.println(amt+" rupees is "+z+" yens");
-            }
-            else
-             {
-                 int z=rupp.pou(amt);
-                  out.println(amt+" rupees is "+z+" pounds");
-             }
-         
-        }
-    }
-
-
-//rupp.java (EJB file)
-
-package rupp;
-
-import javax.ejb.Stateless;
-
-
-@Stateless
-public class rupp {
-
-  public Integer dol(int amt)
-  {
-      int z=amt/64;
-      return z;
-      
-  }
-  public Integer eur(int amt)
-  {
-      int z=amt/76;
-      return z;
-      
-  }
-  public Float yena(float amt)
-  {
-      float z=(float) (amt/0.58);
-      return z;
-      
-  }
-  public Integer pou(int amt)
-  {
-      int z=amt/88;
-      return z;
-      
-  }
-}
-
-
-EJB app for working with database.
-//index.html
-
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <form name="f1" method="Post" action="f1">
-            Name:
-           <input type="text" name="t1"> <br> <br>
-            Rollno:
-            <input type="text" name="t2"> <br> <br>
-            Address:
-            <input type="text" name="t3"> <br> <br>
-            <input type="submit"  name="b1" value="insert">
-            <br>
-            <br>
-             <input type="submit" name="b1" value="update">
-            <br>
-            <br>
-             <input type="submit" name="b1" value="delete">
-            <br>
-            <br>
-             <input type="submit" name="b1" value="select">
-            <br>
-            <br>
-            
-        </form>
-    </body>
-</html>
-
-
-//first.java(Servlet)
-import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.out;
-import javax.ejb.EJB;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import sqlbean.sqlbean;
-public class f1 extends HttpServlet {
- @EJB
-    private sqlbean sqlbean;
- 
-  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-          String a,b,c,d;
-           a=request.getParameter("t1");
-             b=request.getParameter("t2");
-               c=request.getParameter("t3");
-                 d=request.getParameter("b1");
-                 if(d.equals("insert"))
-                 {
-                     sqlbean.ins(a,b,c);
-                     out.println("recrds inserted");
-                 }
-                 else if(d.equals("update"))
-                 {
-                     sqlbean.upd(a,b);
-                     out.println("recrds updated");
-                 }
-                 else if(d.equals("delete"))
-                 {
-                     sqlbean.del(b);
-                     out.println("recrds deleted");
-                 }
-                 else
-                 {
-                     sqlbean.sel(a,b,c);
-                     out.println("recrds shown");
-                 }
-        }
-    }
 
 }
 
-//sqlbean.java(EJB)
+}
 
-package sqlbean;
-import static java.lang.System.out;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.ejb.Stateless;
-@Stateless
-public class sqlbean {
-public void ins(String a,String b,String c)
-{
-    try
-{
-  Class.forName("com.mysql.jdbc.Driver");
-    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirst","root","root");
-    String q="insert into student1 values(?,?,?)";
-     PreparedStatement ps=con.prepareStatement(q);
-            ps.setString(1,a);
-            ps.setString(2,b);
-            ps.setString(3,c);
-            
-            
-            ps.executeUpdate();
-            con.close();
-            ps.close();
-          out.println("recrds inserted");
-}
-catch(Exception E)
-{
-    System.out.println(E.getMessage());
-} 
-}
-public void upd(String a,String b)
-{
-    try
-{
-    Class.forName("com.mysql.jdbc.Driver");
-    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirst","root","root");
-    String q="update student1 set name=? where rollno=?";
-     PreparedStatement ps=con.prepareStatement(q);
-            ps.setString(1,a);
-            ps.setString(2,b);
-           
-            
-            
-            ps.executeUpdate();
-            con.close();
-            ps.close();
-          out.println("recrds updated");
-}
-catch(Exception E)
-{
-    System.out.println(E.getMessage());
-} 
-}
-public void del(String b)
-{
-    try
-{
-    Class.forName("com.mysql.jdbc.Driver");
-    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirst","root","root");
-    String q="delete from student1 where rollno=?";
-     PreparedStatement ps=con.prepareStatement(q);
-            
-            ps.setString(1,b);
-           
-            
-            
-            ps.executeUpdate();
-            con.close();
-            ps.close();
-          out.println("recrds deleted");
-}
-catch(Exception E)
-{
-   out.println(E.getMessage());
-} 
-}
-public void sel(String a,String b,String c)
-{
-    try
-{
-    Class.forName("com.mysql.jdbc.Driver");
-    Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/myfirst","root","root");
-    String q="select * from student1";
-     PreparedStatement ps=con.prepareStatement(q);
-            ResultSet rs = ps.executeQuery(q );
-while (rs.next()) {
-	String name = rs.getString("name");
-	String rollno = rs.getString("rollno");
-        String address = rs.getString("address");
-        out.println("name : " + name);
-				out.println("rollno : " + rollno);
-                                out.println("address : " + address);
-}
-            
-            
-            ps.executeUpdate();
-            con.close();
-            ps.close();
-          out.println("recrds shown");
-}
-catch(Exception E)
-{
-  out.println(E.getMessage());
-} 
-}
-}
+
+
+
+
