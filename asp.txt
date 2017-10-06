@@ -1,0 +1,2257 @@
+LINQ XML GRIDVIEW
+Code:
+Suppose we have a contact.xml file :-
+
+<?xml version="1.0" encoding="utf-8">
+
+<contactdetail>
+   <contact>
+      <name>Alex Mercer</name>
+      <title>dotnet developer</title>
+   </contact>
+   <contact>
+      <name>Sam Fischer</name>
+      <title>java developer</title>
+   </contact>
+</contactdetail>
+
+
+Now, we will read the xml file by using LINQ and display the data in gridview :-
+
+XDocument contactfileobj = XDocument.Load(Server.MapPath(contacts.xml));
+
+var contacts = from c in contactfileobj.Descendents("contact")
+               select new {
+                   name = (string) c.Element("name"),
+                   title = (string) c.Element("title")
+               };
+
+GridView1.DataSource = contacts;
+GridView1.DataBind();
+
+
+Show time in textbox 2 second delay autoupdate
+Default3.aspx
+<%@PageLanguage="C#"AutoEventWireup="true"CodeFile="Default.aspx.cs"Inherits="Default3"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">    <title></title></head>
+<body>
+    <form id="form1" runat="server"> 
+          <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="Button1" EventName="click" />
+                <asp:AsyncPostBackTrigger ControlID="Timer1" EventName="tick" /> 
+            </Triggers>
+        </asp:UpdatePanel>
+        <asp:Button ID="Button1" runat="server" Text="Button" onclick="Button1_Click" />
+        <asp:Timer ID="Timer1" runat="server" Enabled="False" Interval="2000" 
+              ontick="Timer1_Tick">asp:Timer> 
+    </form>
+</body>
+</html>
+
+Default3.aspx.cs
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+public partial class Default3 : System.Web.UI.Page{
+    protected void Page_Load(object sender, EventArgs e)    {    }
+    protected void Button1_Click(object sender, EventArgs e)    {
+        Label1.Text = "Wait for 2 seconds";        
+        Timer1.Enabled = true;
+    }
+    protected void Timer1_Tick(object sender, EventArgs e)    {
+        TextBox1.Text = DateTime.Now.ToLongTimeString();
+        Label1.Text = "";
+    }
+}
+
+
+
+Write an application that receives the following information
+from a set of students
+ Student ID:
+ Student Name:
+ Course Name:
+ Date of Birth:
+The application should also display the information of all the
+students once the data is entered. Implement this using an
+Array of Structs.
+using A=System.Console;
+class Demo
+{
+ public struct Student
+ {
+ public string StudID;
+ public string StudName;
+ public string CourseName;
+ public string DOB;
+ }
+ static void Main(string[] args)
+ {
+ Student[] stud = new Student[2];
+ A.WriteLine("Enter the Student details:");
+ for(int i = 0; i < 2; i++)
+ {
+ A.WriteLine();
+ A.WriteLine("Enter Student ID:");
+ stud[i].StudID = A.ReadLine();
+ A.WriteLine("Enter Student Name:");
+ stud[i].StudName = A.ReadLine();
+ A.WriteLine("Enter Student Course Name:");
+ stud[i].CourseName = A.ReadLine();
+ A.WriteLine("Enter Student DOB:");
+ stud[i].DOB = A.ReadLine();
+Page No.9
+ }
+ A.WriteLine();
+ A.WriteLine();
+ A.WriteLine("Student details:");
+ for(int i = 0; i < 2; i++)
+ {
+ A.WriteLine();
+ A.WriteLine("Student ID:{0}", stud[i].StudID);
+ A.WriteLine("Student Name:{0}", stud[i].StudName);
+A.WriteLine("Student Course Name:{0}",
+stud[i].CourseName);
+ A.WriteLine("Student DOB:{0}", stud[i].DOB);
+ }
+ A.ReadKey();
+ }
+}
+
+
+
+C# Program to Reverse a Number & Check if it is a Palindrome
+using System;
+class program
+{
+    public static void Main()
+    {
+        int num, temp, remainder, reverse = 0;
+        Console.WriteLine("Enter an integer \n");
+        num = int.Parse(Console.ReadLine());
+        temp = num;
+        while (num > 0)
+        {
+            remainder = num % 10;
+            reverse = reverse * 10 + remainder;
+            num /= 10;
+        }
+        Console.WriteLine("Given number is = {0}", temp);
+        Console.WriteLine("Its reverse is  = {0}", reverse);
+        if (temp == reverse)
+            Console.WriteLine("Number is a palindrome \n");
+        else
+            Console.WriteLine("Number is not a palindrome \n");
+        Console.ReadLine();
+    }
+}
+
+
+Jagged Array
+using System;
+namespace ArrayApplication
+{
+   class MyArray
+   {
+      static void Main(string[] args)
+      {
+         /* a jagged array of 5 array of integers*/
+         int[][] a = new int[][]{new int[]{0,0},new int[]{1,2},new int[]{2,4},new int[]{ 3, 6 }, new int[]{ 4, 8 } };
+         int i, j;
+         
+         /* output each array element's value */
+         for (i = 0; i < 5; i++)
+         {
+            for (j = 0; j < 2; j++)
+            {
+               Console.WriteLine("a[{0}][{1}] = {2}", i, j, a[i][j]);
+            }
+         }
+         Console.ReadKey();
+      }
+   }
+}
+
+
+
+Multilevel Inheritance
+using System;
+using System.Collections.Genric;
+using System.Text;
+namespace CSharpMulti
+
+{
+
+class Program
+
+[
+
+static void Main(string[]args)
+
+{
+
+DerivedClass dob= new DerivedClass3();
+Base baseRef;//it is base class reference  
+baseRef = dob;
+baseRef.newFunction();
+}
+}
+
+class Base
+{
+//create virtual method in base class
+public virtual void newFunction()
+{
+
+Console.WriteLine("newFunction() in Base class.");
+}
+}
+
+class DerivedClass1:Base
+{
+//override newFunction in derived class
+public override void newFunction()
+{
+Console.WriteLine("newFunction() in First Derived Class.");
+}
+}
+
+class derivedClass2:DerivedClass1
+{
+public override void newFunction()
+{
+Console.WriteLine("newFunction() in second Derived Class.");
+}
+}
+class DerivedClass3:DerivedClass2
+{
+//this class does not override newFunction
+}
+}
+
+
+Gridview previous next pagination
+HTML Markup
+The following HTML Markup consists of an ASP.Net GridView with four BoundField columns. In order to implement Paging in GridView, AllowPaging property is set to true and OnPageIndexChanging event has been handled.
+<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AllowPaging="true"
+    OnPageIndexChanging="OnPageIndexChanging" PageSize="10">
+    <Columns>
+        <asp:BoundField ItemStyle-Width="150px" DataField="CustomerID" HeaderText="Customer ID" />
+        <asp:BoundField ItemStyle-Width="150px" DataField="ContactName" HeaderText="Contact Name" />
+        <asp:BoundField ItemStyle-Width="150px" DataField="City" HeaderText="City" />
+        <asp:BoundField ItemStyle-Width="150px" DataField="Country" HeaderText="Country" />
+    </Columns>
+</asp:GridView>
+ 
+ 
+Namespaces
+You will need to import the following namespaces.
+C#
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+Populating GridView from database
+Inside the Page Load event of the page, the GridView is populated with records from the Customers table of the Northwind database.
+C#
+protected void Page_Load(object sender, EventArgs e)
+{
+    if (!this.IsPostBack)
+    {
+        this.BindGrid();
+    }
+}
+ 
+private void BindGrid()
+{
+    string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+    using (SqlConnection con = new SqlConnection(constr))
+    {
+        using (SqlCommand cmd = new SqlCommand("SELECT CustomerId, ContactName, City, Country FROM Customers"))
+        {
+            using (SqlDataAdapter sda = new SqlDataAdapter())
+            {
+                cmd.Connection = con;
+                sda.SelectCommand = cmd;
+                using (DataTable dt = new DataTable())
+                {
+                    sda.Fill(dt);
+                    GridView1.DataSource = dt;
+                    GridView1.DataBind();
+                }
+            }
+        }
+    }
+}
+
+
+Implementing Paging in GridView
+The following event handler is executed when a page is changed inside the GridView.
+The value of the PageIndex of the Page which was clicked is present inside the NewPageIndex property of the GridViewPageEventArgs object and it is set to the PageIndex property of the GridView and the GridView is again populated by calling the BindGrid function.
+C#
+protected void OnPaging(object sender, GridViewPageEventArgs e)
+{
+    GridView1.PageIndex = e.NewPageIndex;
+    GridView1.DataBind();
+}
+
+
+
+Web server controls
+WebForm1.aspx.cs	Output:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+namespace WebApplication2{
+    public partial class WebForm1 : System.Web.UI.Page   {
+        protected void Page_Load(object sender, EventArgs e){}
+        protected void Calendar1_SelectionChanged(object sender, EventArgs e)   {    }
+        protected void Button1_Click(object sender, EventArgs e){
+            Session["name"] = TextBox1.Text;
+            Session["dob"] = Calendar1.SelectedDate;
+            Session["gender"] = RadioButtonList1.SelectedValue;
+            Session["city"] = DropDownList1.SelectedValue;
+            Session["hobby"] = CheckBoxList1.SelectedValue;
+            Session["password"] = TextBox2.Text;
+            Response.Redirect("WebForm2.aspx");
+        }
+    }
+}
+
+WebForm2.aspx.cs
+using System;		Output
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication2
+{
+    public partial class WebForm2 : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            Label1.Text = Session["name"].ToString();
+            Label2.Text = Session["dob"].ToString();
+            Label3.Text = Session["gender"].ToString();
+            Label4.Text = Session["city"].ToString();
+            Label5.Text = Session["hobby"].ToString();
+        }
+    }
+}
+
+
+
+Number of visitors currently browsing
+Procedure
+ 
+Let's begin.
+Go to File -> New -> Website then select ASP.NET Empty Web Site
+Right-click on the Website Project (in Solution Explorer) then select Add then click on Add New Item
+Select Global Application Class (Global.asax) then click on the Add Button
+ 
+You will see various events in the Global.asax file, for example Application_Start, Application_End and so onThe . Application_Start event is called once when the application starts. The Session_Start event is called every time a new session is started. The Session_End event is called when a user session ends. In the Application_Start event, we will initialize our Application state variable.
+<%@ Application Language="C#" %>  
+  
+<script runat="server">  
+  
+    void Application_Start(object sender, EventArgs e)   
+    {  
+        // Code that runs on application startup  
+        Application["TotalOnlineUsers"] = 0;  
+    }  
+      
+    void Application_End(object sender, EventArgs e)   
+    {  
+        //  Code that runs on application shutdown  
+  
+    }  
+          
+    void Application_Error(object sender, EventArgs e)   
+    {   
+        // Code that runs when an unhandled error occurs  
+  
+    }  
+  
+    void Session_Start(object sender, EventArgs e)   
+    {  
+        // Code that runs when a new session is started  
+        Application.Lock();  
+        Application["TotalOnlineUsers"] = (int)Application["TotalOnlineUsers"] + 1;  
+        Application.UnLock();  
+    }  
+  
+    void Session_End(object sender, EventArgs e)   
+    {  
+        // Code that runs when a session ends.   
+        // Note: The Session_End event is raised only when the sessionstate mode  
+        // is set to InProc in the Web.config file. If session mode is set to StateServer   
+        // or SQLServer, the event is not raised.  
+        Application.Lock();  
+        Application["TotalOnlineUsers"] = (int)Application["TotalOnlineUsers"] - 1;  
+        Application.UnLock();  
+    }  
+         
+</script>  
+In the Web.config file, add SessionState within the system.web element. By default the session uses Cookies (cookieless="false") and the default timeout period is 20 minutes.
+<system.web>  
+<sessionState mode="InProc" cookieless="false" timeout="20"></sessionState>  
+</system.web>  
+Now add a Webform and drop a label control from the Toolbox.
+Default.aspx Code: 
+<form id="form1" runat="server">  
+    <div>  
+    <p>No. of Online Users:<asp:Label ID="Label1" runat="server" Text="Label" ForeColor="#CC0000"></asp:Label></p>  
+    </div>  
+</form>  
+Default.aspx.cs Code: 
+protected void Page_Load(object sender, EventArgs e)  
+{  
+        Label1.Text = Application["TotalOnlineUsers"].ToString();  
+}  
+Run the application (Ctrl+ F5). For checking it, copy the URL and paste it into a new instance of a different browser. When a visitor visits your website, a new session is started for him and the Application["TotalOnlineUsers"] variable is increased by 1. When the user session expires then the Application["TotalOnlineUsers"] variable is decreased by 1. 
+ 
+Preview:
+ 
+ 
+We can also use a cookieless session by setting the cookieless property to true. 
+<sessionState mode="InProc" cookieless="true" timeout="20"></sessionState>  
+On running the application, you will see a Session ID in URL that is different for all users, for all sessions, for the new instance of the ohter browser.
+
+The session ID is embedded in the URL in this format:
+ 
+http://yourserver/(session ID here)/default.aspx
+
+
+delegate
+using System;
+
+delegate int NumberChanger(int n);
+namespace DelegateAppl
+{
+   class TestDelegate
+   {
+      static int num = 10;
+      public static int AddNum(int p)
+      {
+         num += p;
+         return num;
+      }
+
+      public static int MultNum(int q)
+      {
+         num *= q;
+         return num;
+      }
+      public static int getNum()
+      {
+         return num;
+      }
+
+      static void Main(string[] args)
+      {
+         //create delegate instances
+         NumberChanger nc1 = new NumberChanger(AddNum);
+         NumberChanger nc2 = new NumberChanger(MultNum);
+         
+         //calling the methods using the delegate objects
+         nc1(25);
+         Console.WriteLine("Value of Num: {0}", getNum());
+         nc2(5);
+         Console.WriteLine("Value of Num: {0}", getNum());
+         Console.ReadKey();
+      }
+   }
+}
+
+
+Image upload
+
+<form id="form1" runat="server">
+    <asp:FileUpload id="FileUploadControl" runat="server" />
+    <asp:Button runat="server" id="UploadButton" text="Upload" onclick="UploadButton_Click" />
+    <br /><br />
+    <asp:Label runat="server" id="StatusLabel" text="Upload status: " />
+</form>
+
+
+protected void UploadButton_Click(object sender, EventArgs e)
+{
+    if(FileUploadControl.HasFile)
+    {
+        try
+        {
+            if(FileUploadControl.PostedFile.ContentType == "image/jpeg")
+            {
+                if(FileUploadControl.PostedFile.ContentLength < 102400)
+                {
+                    string filename = Path.GetFileName(FileUploadControl.FileName);
+                    FileUploadControl.SaveAs(Server.MapPath("~/") + filename);
+                    StatusLabel.Text = "Upload status: File uploaded!";
+                }
+                else
+                    StatusLabel.Text = "Upload status: The file has to be less than 100 kb!";
+            }
+            else
+                StatusLabel.Text = "Upload status: Only JPEG files are accepted!";
+        }
+        catch(Exception ex)
+        {
+            StatusLabel.Text = "Upload status: The file could not be uploaded. The following error occured: " + ex.Message;
+        }
+    }
+}
+
+
+
+Gridview dropdownlist database
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+<title>Asp.net Bind Data to Dropdownlist in inside of gridview</title>
+</head>
+<body>
+<form id="form1" runat="server">
+<div>
+<asp:GridView ID="gvUserInfo" runat="server" AutoGenerateColumns="false" OnRowDataBound="gvUserInfo_RowDataBound" >
+<HeaderStyle BackColor="#df5015" Font-Bold="true" ForeColor="White" />
+<Columns>
+<asp:BoundField DataField="CountryId" HeaderText="CountryId" />
+<asp:BoundField DataField="CountryName" HeaderText="CountryName" />
+<asp:TemplateField HeaderText="Location">
+<ItemTemplate>
+<asp:DropDownList ID="ddlCity" runat="server" Width="100px"/>
+</ItemTemplate>
+</asp:TemplateField>
+</Columns>
+</asp:GridView>
+</div>
+</form>
+</body>
+</html>
+Now add following namespaces in codebehind
+
+C# Code
+
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+After that add following code in code behind
+
+
+SqlConnection con =new SqlConnection("Data Source=SureshDasari;Integrated Security=true;Initial Catalog=MySampleDB");
+
+protected void Page_Load(object sender, EventArgs e)
+{
+if (!IsPostBack)
+{
+BindGridview();
+}
+}
+// This method is used to bind gridview from database
+protected void BindGridview()
+{
+con.Open();
+SqlCommand cmd = new SqlCommand("select TOP 4 CountryId,CountryName from Country", con);
+SqlDataAdapter da = new SqlDataAdapter(cmd);
+DataSet ds = new DataSet();
+da.Fill(ds);
+con.Close();
+gvUserInfo.DataSource = ds;
+gvUserInfo.DataBind();
+
+
+ 
+}
+
+protected void gvUserInfo_RowDataBound(object sender, GridViewRowEventArgs e)
+{
+if (e.Row.RowType == DataControlRowType.DataRow)
+{
+con.Open();
+var ddl = (DropDownList)e.Row.FindControl("ddlCity");
+int CountryId = Convert.ToInt32(e.Row.Cells[0].Text);
+SqlCommand cmd = new SqlCommand("select * from State where CountryID=" + CountryId, con);
+SqlDataAdapter da = new SqlDataAdapter(cmd);
+DataSet ds = new DataSet();
+da.Fill(ds);
+con.Close();
+ddl.DataSource = ds;
+ddl.DataTextField = "StateName";
+ddl.DataValueField = "StateID";
+ddl.DataBind();
+ddl.Items.Insert(0, new ListItem("--Select--", "0"));
+}
+}
+
+
+
+Create a web page to display the cricket score from the database table event (id, name, score). Refresh the website automatically after every 30 seconds. (Create the table event.)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Page Language="C#" %>
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled 1</title>
+<script runat="server" type="text/c#">
+  protected void Timer1_Tick(object sender, EventArgs e)
+    {
+        Label1.Text = "Panel refreshed at: " +
+DateTime.Now.ToLongTimeString();
+    }
+</script>
+</head>
+<body>
+<form id="form1" runat="server">
+<asp:ScriptManager runat="server" id="ScriptManager1">
+</asp:ScriptManager>
+<asp:UpdatePanel runat="server" id="UpdatePanel1">
+<ContentTemplate>
+<asp:Timer runat="server" id="Timer1" Interval="10000" OnTick="Timer1_Tick"></asp:Timer>
+<asp:Label runat="server" Text="Page not refreshed yet." id="Label1">
+</asp:Label>
+</ContentTemplate>
+</asp:UpdatePanel>
+<asp:Label runat="server" Text="Label" id="Label2"></asp:Label>
+</form>
+</body>
+</html>
+
+
+
+Page No.1
+Practical no.1
+Simple programes with C#
+A)Write a Console Application that obtains four integer values
+from the user and displays the product. Hint: you may recall
+that the Convert.ToDouble() command was use to convert the
+input from the console to a double; the equivalent command to
+convert from a string to an int is Convert.ToInt32().
+using System;
+class Demo
+ {
+ static void Main(string[] args)
+ {
+ int no1,no2,no3,no4;
+ Console.WriteLine("Enter No1:");
+ no1=Convert.ToInt32(Console.ReadLine());
+ Console.WriteLine("Enter No2:");
+ no2=Convert.ToInt32(Console.ReadLine());
+ Console.WriteLine("Enter No3:");
+ no3=Convert.ToInt32(Console.ReadLine());
+ Console.WriteLine("Enter No4:");
+ no4=Convert.ToInt32(Console.ReadLine());
+ int product=no1*no2*no3*no4;
+ Console.WriteLine("Product is:"+product);
+ Console.ReadKey();
+ }
+ }
+Page No.
+2
+OUTPUT: 
+Page No.3
+
+
+
+B)If you have two integers stored in variables var1 and var2,
+what Boolean test can you perform to see if one or the other
+(but not both) is greater than 10?
+using A=System.Console;
+class Program
+{
+ static void Main(string[] args)
+ {
+ int var1, var2;
+ A.WriteLine("Enter var1 : ");
+ var1 = int.Parse(A.ReadLine());
+ A.WriteLine("Enter var2 : ");
+ var2 = int.Parse(A.ReadLine());
+ if (var1 > 10)
+ {
+ A.WriteLine(var1 + " is Greater Than 10");
+ }
+ else if (var2 > 10)
+ {
+ A.WriteLine(var2 + " is Greater Than 10");
+ }
+ else
+ {
+ A.WriteLine(var1 + " & " + var2 + " is Less Than 10");
+ }
+ A.ReadKey();
+ }
+}
+Page No.
+4
+OUTPUT:
+
+ 
+Page No.5
+
+
+
+C)Write an application that includes the logic from Exercise 1,
+obtains two numbers from the user, and display them, but
+rejects any input where both numbers are greater than 10 and
+asks for two new numbers.
+using System;
+class Program
+{
+ static void Main(string[] args)
+ {
+ int var1, var2;
+ label:
+ Console.WriteLine();
+ Console.Write("Enter number 1: ");
+ var1 = Convert.ToInt32(Console.ReadLine());
+
+ Console.Write("Enter number 2: ");
+ var2 = Convert.ToInt32(Console.ReadLine());
+
+ if ((var1 > 10 && var2 > 10))
+ {
+ Console.WriteLine("The numbers are
+greater than 10,Please re-enter the numbers");
+ goto label;
+ }
+ else
+ {
+ Console.WriteLine("Number 1: " + var1);
+ Console.WriteLine("Number 2 :" + var2);
+ }
+ Console.ReadKey();
+ }
+}
+Page No.
+6
+OUTPUT:
+Page No.7
+
+
+
+D)Write a console application that places double quotation marks
+around each word in a string.
+using A = System.Console;
+class Demo
+{
+ static void Main(string[] args)
+ {
+ string str = "We Can & We Will";
+ string[] strLine = str.Split();
+ A.WriteLine("Given string is : {0} ",str);
+ A.WriteLine();
+ A.WriteLine("The result is ");
+ foreach (string word in strLine)
+ {
+ A.WriteLine("\"{0}\"",word);
+ }
+ A.ReadKey();
+ }
+}
+OUTPUT:
+Page No.8
+
+
+
+E)Write an application that receives the following information
+from a set of students
+ Student ID:
+ Student Name:
+ Course Name:
+ Date of Birth:
+The application should also display the information of all the
+students once the data is entered. Implement this using an
+Array of Structs.
+using A=System.Console;
+class Demo
+{
+ public struct Student
+ {
+ public string StudID;
+ public string StudName;
+ public string CourseName;
+ public string DOB;
+ }
+ static void Main(string[] args)
+ {
+ Student[] stud = new Student[2];
+ A.WriteLine("Enter the Student details:");
+ for(int i = 0; i < 2; i++)
+ {
+ A.WriteLine();
+ A.WriteLine("Enter Student ID:");
+ stud[i].StudID = A.ReadLine();
+ A.WriteLine("Enter Student Name:");
+ stud[i].StudName = A.ReadLine();
+ A.WriteLine("Enter Student Course Name:");
+ stud[i].CourseName = A.ReadLine();
+ A.WriteLine("Enter Student DOB:");
+ stud[i].DOB = A.ReadLine();
+Page No.9
+ }
+ A.WriteLine();
+ A.WriteLine();
+ A.WriteLine("Student details:");
+ for(int i = 0; i < 2; i++)
+ {
+ A.WriteLine();
+ A.WriteLine("Student ID:{0}", stud[i].StudID);
+ A.WriteLine("Student Name:{0}", stud[i].StudName);
+A.WriteLine("Student Course Name:{0}",
+stud[i].CourseName);
+ A.WriteLine("Student DOB:{0}", stud[i].DOB);
+ }
+ A.ReadKey();
+ }
+}
+OUTPUT:
+Page No.10
+
+
+
+
+F) Write program using conditional statements & loops.
+
+
+
+I) Generate Fibonacci Series.
+using A=System.Console;
+ class Program
+ {
+ static void Main(string[] args)
+ {
+ int previous=-1, int next=1;
+ int position;
+ A.WriteLine("Enter the position");
+ position=int.Parse(A.ReadLine());
+ for(int i=0;i<position;i++)
+ {
+ int sum = next + previous;
+ previous = next;
+ next = sum;
+ A.Write(next + " ");
+ }
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.11
+
+
+
+II) Generate various patterns.
+
+
+a)
+using A=System.Console;
+ class Program
+
+{
+ static void Main(string[] args)
+
+{
+ for (int i = 0; i <= 5; i++)
+
+{
+ for (int k = 5; k > i; k--
+)
+
+{
+ A.Write(" ");
+
+}
+ for (int j = 1; j <= i; j++)
+
+{
+ A.Write(i + " ");
+
+}
+ A.WriteLine(" ");
+
+}
+ A.ReadKey();
+
+}
+
+}
+OUTPUT:
+Page No.12
+
+
+
+b)
+using A=System.Console;
+ class Program
+ {
+ static void Main(string[] args)
+ {
+ int n = 6;
+ for (int i = 0; i < n; i++)
+ {
+ int c=1;
+ for (int j = 0; j <= i; j++)
+ {
+ A.Write(c+ " ");
+ c=(c*(i-j))/(j+1);
+ }
+ A.WriteLine(" ");
+ }
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.13
+
+
+
+III) Test for prime numbers.
+using A=System.Console;
+class Program
+ {
+ static void Main(string[] args)
+ {
+ int number;
+ A.WriteLine("Enter the number:");
+ number = int.Parse(A.ReadLine());
+ int i;
+ for (i = 2; i < number; i++)
+ {
+ if (number % i == 0)
+ {
+ A.WriteLine("{0} is not prime number", number);
+ break;
+ }
+ }
+ if (i == number)
+ {
+ A.WriteLine("{0} is a prime number", number);
+ }
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.14
+
+
+
+IV) Generate prime numbers.
+using A=System.Console;
+class Program
+ {
+ void PrimeNumber(long num)
+ {
+ bool isPrime = true;
+ A.WriteLine("Prime number till:");
+ num = int.Parse(A.ReadLine());
+ A.WriteLine("");
+ for (int i = 2; i <= num; i++)
+ {
+ for (int j = 2; j <= num; j++)
+ {
+ if (i != j && i % j == 0)
+ {
+ isPrime = false;
+ break;
+ }
+ }
+ if(isPrime)
+ {
+ A.WriteLine(i);
+ }
+ isPrime = true;
+ }
+ }
+ static void Main(string []args)
+ {
+ Program p = new Program();
+ p.PrimeNumber(999999999999999L);
+ A.ReadKey();
+ }
+}
+Page No.15
+OUTPUT:
+Page No.16
+
+
+
+
+V) Reverse and sum of digits.
+using A=System.Console;
+ class Demo
+ {
+ static void Main(string[] args)
+ {
+ A.WriteLine("Enter number:");
+ int num, sum = 0;
+ num = int.Parse(A.ReadLine());
+ A.WriteLine();
+ A.WriteLine("Reverse number is :");
+ while (num > 0)
+ {
+ int temp;
+ temp = num % 10;
+ sum = sum + temp;
+ A.Write(temp);
+ num = num / 10;
+ }
+ A.WriteLine();
+ A.WriteLine("Sum pf the number is:");
+ A.Write(sum);
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.17
+
+
+
+
+VI) Test of vowels.
+using System;
+ class Programe
+ {
+ static void Main(string[] args)
+ {
+ char c;
+ Console.WriteLine("Enter any charater:");
+ c = Convert.ToChar(Console.ReadLine());
+ switch (c)
+ {
+ case 'a':
+ case 'e':
+ case 'i':
+ case 'o':
+ case 'u':
+ case 'A':
+ case 'E':
+ case 'I':
+ case 'O':
+ case 'U':
+ Console.Write("It is a vowel");
+ break;
+ default:
+ Console.Write("It is consonant character");
+ break;
+ }
+ Console.ReadKey();
+ }
+ }
+Page No.18
+OUTPUT:
+Page No.19
+
+
+
+
+VII) Use of foreach loop with arrays.
+using A=System.Console;
+ class Demo
+ {
+ static void Main(string[] args)
+ {
+ int[] arr1 = new int[5] { 1, 2, 3, 4, 5 };
+ string[] arr2 = new string[3] { "ABC", "XYZ", "PQR" };
+ A.WriteLine("Elements in first array are :");
+ foreach (int i in arr1)
+ {
+ A.WriteLine(i);
+ }
+ A.WriteLine();
+ A.WriteLine("Elements in second array are :");
+ foreach (string i in arr2)
+ {
+ A.WriteLine(i);
+ }
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.20
+Practica no.2
+
+
+
+
+Object oriented programing with C#
+
+
+
+A) Program using classes.
+
+
+
+1) Defining classes.
+using A = System.Console;
+class Rectangle
+{
+ public int length, width;
+ //Definition of method
+ public void GetData(int x, int y)
+ {
+ length = x;
+ width = y;
+ }
+ //Definition of another method
+ public int RectArea()
+ {
+ int area = length * width;
+ return (area);
+ }
+}
+class RectArea //class with Main()
+{
+ static void Main(string[] args)
+ {
+ int area; //Local variable
+ //Creating objects
+ Rectangle rect1 = new Rectangle();
+ //Accessing method
+ rect1.GetData(20, 12);
+ area = rect1.RectArea();
+ A.WriteLine("Area=" + area);
+ A.ReadKey();
+ }
+}
+Page No.21
+OUTPUT:
+Page No.22
+
+
+
+2) Override Method.
+using A=System.Console;
+class Super {
+ protected int x;
+ public Super(int x)
+
+{
+ this.x = x;
+
+}
+ public virtual void Display()
+
+{
+ A.WriteLine("Super x=" + x);
+
+}
+}
+class Sub : Super {
+ int y;
+ public Sub(int x, int y) : base(x)
+
+{
+ this.y = y;
+
+}
+ public override void Display()
+
+{
+ A.WriteLine("Super x=" + x);
+ A.WriteLine("Sub y=" + y);
+
+}
+}
+class OverrideTest {
+ static void Main(string[] args)
+
+{
+ Sub s1 = new Sub(100, 200);
+ s1.Display();
+ A.ReadKey();
+
+}
+}
+Page No.23
+OUTPUT:
+Page No.24
+
+
+
+B) Program with different features of C#
+
+
+1) Implement a property (get & set).
+using A = System.Console;
+class Number
+{
+ private int number;
+ public int Anumber //Property
+ {
+ get
+ {
+ return number;
+ }
+ set
+ {
+ number= value; //value is a keyword
+ }
+ }
+} //closing of class number
+class PropertyTest
+{
+ public static void Main(string[]args)
+ {
+ Number n= new Number();
+ n.Anumber= 1550;
+ int m= n.Anumber;
+ A.WriteLine("Number="+m);
+ A.ReadKey();
+ }
+}
+Page No.25
+OUTPUT:
+Page No.26
+
+
+
+2) Constructor.
+using A = System.Console;
+class Rectangle
+{
+ public int length, width;
+//Definition of constructor
+ public Rectangle(int x, int y)
+ {
+ length = x;
+ width = y;
+ }
+ //Definition of method
+ public int RectArea()
+ {
+ return (length * width);
+ }
+}
+class RectArea //class with Main()
+{
+ static void Main(string[] args)
+ {
+ //calling the constructor
+ Rectangle rect = new Rectangle(20, 12);
+ int area = rect.RectArea();
+ A.WriteLine("Area=" + area);
+ A.ReadKey();
+ }
+}
+Page No.27
+OUTPUT:
+Page No.28
+
+
+
+3) Method Hiding.
+using A = System.Console;
+class Base
+{
+ public void Display()
+ {
+ A.WriteLine("Base Method");
+ }
+}
+class Derived : Base
+{
+ public new void Display()
+ {
+ A.WriteLine("Derived Method");
+ }
+}
+class HideTest
+{
+ static void Main(string[] args)
+ {
+ Derived d = new Derived();
+ d.Display();
+ A.ReadKey();
+ }
+}
+Page No.29
+OUTPUT:
+Page No.30
+
+
+
+4) ArrayList class.
+using System;
+using System.Collections;
+ class city
+ {
+ static void Main(string[] args)
+ {
+ ArrayList n = new ArrayList();
+ n.Add("Madras");
+ n.Add("Bombay");
+ n.Add("Assam");
+ n.Add("Calcutta");
+ n.Add("Delhi");
+
+Console.WriteLine("Capacity=" + n.Capacity);
+ Console.WriteLine("Elements Represent=" + n.Count);
+ Console.WriteLine();
+ n.Sort();
+ for (int i = 0; i < n.Count; i++)
+ {
+ Console.WriteLine(n[i]);
+ }
+ Console.WriteLine();
+ n.RemoveAt(4);
+ for (int i = 0; i < n.Count; i++)
+ {
+ Console.WriteLine(n[i]);
+ }
+ Console.ReadKey();
+ }
+ }
+Page No.31
+OUTPUT:
+Page No.32
+
+
+
+C) Function Overloading
+using A = System.Console;
+class Demo
+{
+ static void Main(string[] args)
+ {
+ A.WriteLine(Volume(10));
+ A.WriteLine(Volume(2.5F, 8));
+ A.WriteLine(Volume(100L, 75, 15));
+ A.ReadKey();
+ }
+ static int Volume(int x)
+{
+ return (x*x*x);
+}
+static double Volume(float r,int h)
+{
+return (3.14*r*r*h);
+}
+static long Volume(long l,int b,int h)
+{
+return (l*b*h);
+}
+}
+OUTPUT:
+Page No.33
+
+
+
+D) Operator overloading
+using A=System.Console;
+class UnOpr
+{
+ private int a;
+ private int b;
+ public UnOpr()
+ {
+ }
+ public UnOpr(int x, int y)
+ {
+ a = x;
+ b = y;
+ }
+ public void show()
+ {
+ A.WriteLine("{0},{1}", a, b);
+ }
+ public static UnOpr operator -(UnOpr c)
+ {
+ UnOpr temp = new UnOpr();
+ temp.a = -c.a;
+ temp.b = -c.b;
+ return temp;
+ }
+}
+class Demo
+{
+ static void Main(string[] args)
+ {
+ UnOpr u1 = new UnOpr(100, 200);
+ A.WriteLine("Frist object u1 :");
+ u1.show();
+ UnOpr u2 = new UnOpr();
+ A.WriteLine();
+ A.WriteLine("Second object u1 :");
+ u2.show();
+Page No.34
+ A.WriteLine();
+ A.WriteLine("Performing u2=-u1 :");
+ u2 = -u1;
+ u2.show();
+ A.ReadKey();
+ }
+}
+OUTPUT:
+Page No.35
+
+
+
+
+E) Inheritance
+using A = System.Console;
+class Item
+{
+ public void Company()
+ {
+ A.WriteLine("Item Code=xxx");
+ }
+}
+ class Fan:Item
+ {
+ public void Model()
+ {
+ A.WriteLine("Fan Model:Classic");
+ }
+ }
+ class Demo
+ {
+ static void Main(string[] args)
+ {
+ Item item = new Item();
+ Fan fan = new Fan();
+ item.Company();
+ fan.Company();
+ fan.Model();
+ A.ReadKey();
+ }
+ }
+OUTPUT:
+Page No.36
+
+
+
+F) Construct Overloading
+using A=System.Console;
+public class ConstOverloading
+{
+ int x;
+ public ConstOverloading(int a, int b)
+ {
+ A.WriteLine(a + b);
+ }
+ public ConstOverloading(float a, float b)
+ {
+ A.WriteLine(a + b);
+ }
+ public ConstOverloading()
+ {
+ int x = 5;
+ A.WriteLine(x + x);
+ }
+}
+class Demo
+{
+ static void Main(string[] args)
+ {
+ ConstOverloading c1 = new ConstOverloading(7, 8);
+ ConstOverloading c2 = new ConstOverloading(34.5f, 20.8f);
+ ConstOverloading c3 = new ConstOverloading();
+ A.ReadKey();
+ }
+}
+Page No.37
+OUTPUT:
+Page No.38
+
+
+
+
+G) Implementation of multiple interfaces.
+using A = System.Console;
+interface Addtion
+{
+ int Add();
+}
+interface Multiplication
+{
+ int Mul();
+}
+class Computation: Addtion,Multiplication
+{
+ int x,y;
+ public Computation(int x,int y)
+ {
+ this.x=x;
+ this.y=y;
+ }
+ public int Add()
+ {
+ return(x+y);
+ }
+ public int Mul()
+ {
+ return (x * y);
+ }
+ }
+class InterfaceTest
+{
+ static void Main(string []args)
+ {
+ Computation com=new Computation(10,20);
+
+Addtion add=(Addtion)com;
+ Multiplication mul=(Multiplication)com;
+ A.WriteLine("Sum="+add.Add());
+ A.WriteLine("product="+mul.Mul());
+ A.ReadKey();
+Page No.39
+
+}
+}
+OUTPUT:
+Page No.40
+
+
+
+H) Implement Delegate
+using A = System.Console;
+delegate int ArithOp(int x,int y);
+class MathOperation
+{
+ public static int Add(int a, int b)
+ {
+ return (a + b);
+ }
+ public static int Sub(int a, int b)
+ {
+ return (a - b);
+ }
+}
+class Demo
+{
+ static void Main(string[] args)
+ {
+ ArithOp op1 = new ArithOp(MathOperation.Add);
+ ArithOp op2 = new ArithOp(MathOperation.Sub);
+ int result1 = op1(200, 100);
+ int result2 = op2(200, 100);
+ A.WriteLine("Result=" + result1);
+ A.WriteLine("Result=" + result2);
+ A.ReadKey();
+ }
+}
+OUTPUT:
+Page No.41
+
+
+
+I) Write a Program for user defined exception to match the
+string India
+using System;
+class NoMatchException : Exception
+{
+ public NoMatchException()
+ {
+ }
+ public NoMatchException(string str) : base(str)
+ {
+ }
+}
+class Demo
+{
+ static void Main(string[] args)
+ {
+ string str;
+ Console.WriteLine("Enter the string");
+ str=Console.ReadLine();
+ try
+{
+ if(str!="India")
+ {
+ throw new NoMatchException("No Match");
+ }
+ else
+ {
+ Console.WriteLine("Match");
+ }
+ }
+ catch(NoMatchException n)
+ {
+ Console.WriteLine(n);
+ }
+ Console.ReadKey();
+ }
+}
+Page No.42
+OUTPUT:
+Page No.43
+Practical No.3
+
+
+
+Program using different controls
+
+
+
+1) Program using ListBox & CheckedListBox controls.
+using System;
+using System.Windows.Forms;
+namespace WindowsFormsApplication10
+{
+ public partial class Form1 : Form
+ {
+ public Form1()
+ {
+ InitializeComponent();
+ }
+ private void btnMove_Click(object sender, EventArgs e)
+ {
+ if (chklstValues.CheckedItems.Count > 0)
+ {
+ lstSelected.Items.Clear();
+ foreach (string item in chklstValues.CheckedItems)
+ {
+ lstSelected.Items.Add(item.ToString());
+ }
+ for (int i = 0; i < chklstValues.Items.Count; i++)
+ chklstValues.SetItemChecked(i, false);
+ }
+ }
+ private void btnClear_Click(object sender, EventArgs e)
+ {
+ lstSelected.Items.Clear();
+ }
+ private void btnExit_Click(object sender, EventArgs e)
+ {
+ Application.Exit();
+ }
+ }
+}
+Page No.44
+OUTPUT:
+Page No.45
+
+
+
+2) Program using CheckBox & RadioButton controls.
+using System;
+using System.Windows.Forms;
+namespace WindowsFormsApplication7
+{
+ public partial class EmployeeDetails : Form
+ {
+ public EmployeeDetails()
+ {
+ InitializeComponent();
+ }
+ private void btnOk_Click(object sender, EventArgs e)
+ {
+ string str;
+ str = "Name : " + txtName.Text + "\r\n";
+ str += "Address : " + txtAddress.Text + "\r\n";
+ str +="Occupation : "+(chkProgrammer.Checked?
+"Programmer":"Not a Programmer")+"\r\n";
+ str +="Gender : "+(rbtnMale.Checked?
+"Male":"Female")+"\r\n";
+ str +="Age : "+txtAge.Text+"\r\n";
+ lblDisplay.Text=str;
+ }
+ private void btnExit_Click(object sender, EventArgs e)
+ {
+ Application.Exit();
+ }
+ private void btnClear_Click(object sender, EventArgs e)
+ {
+ txtName.Text = "";
+ txtAddress.Text = "";
+ txtAge.Text = "";
+ lblDisplay.Text = "";
+ rbtnMale.Checked = true;
+ chkProgrammer.Checked = true;
+ txtName.Focus();
+ }
+ }
+}
+Page No.46
+OUTPUT:
+Page No.47
+Practical No.4
+
+
+
+Programs using CSS
+1) Create Embbed & Inline Style Sheet.
+<%@ Page Language="C#" AutoEventWireup="true"
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<html>
+<head id="Head1" runat="server">
+ <title>Embeded & Inline Style</title>
+ <style type="text/css">
+ #HeaderWrapper
+ {
+ background-color:Yellow;
+ width:884px;
+ height:86px;
+ }
+ *
+ {
+ font-family:Arial;
+ }
+ #PageWrapper
+ {
+ width:884px;
+ }
+ #MainContent
+ {
+ width:664px;
+ float:left;
+ }
+ #SideBar
+ {
+ background-color:Gray;
+ width:180px;
+ float:left;
+ }
+ #Footer
+ {
+Page No.48
+ background-color:Silver;
+ width:844px;
+ clear:both;
+ }
+ .Introduction
+ {
+ color:Green;
+ font-style:italic;
+ }
+ </style>
+</head>
+<body>
+ <div id="PageWrapper">
+ <div id="HeaderWrapper">Header Goes here</div>
+ <div id="MenuWrapper">Menu Goes here</div>
+ <div id="MainContent">
+ <h1 class="Introduction" style="padding:0px;
+margin:0px 0px 10px 0px">
+ Hiee....Visitors
+ <p>Welcome Visitor </p>
+ </h1>
+ </div>
+ <div id="SideBar">SideBar Goes here </div>
+ <div id="Footer">Footer Goes here</div>
+ </div>
+</body>
+</html>
+Page No.49
+OUTPUT:
+Page No.50
+Practical No.5
+
+
+
+Programs using ASP.NET Server controls
+
+
+
+1) Work with List controls.
+
+
+
+File1:-Default.aspx.cs
+using System;
+using System.Web.UI.WebControls;
+public partial class _Default : System.Web.UI.Page
+{
+ protected void btnSelect_Click(object sender, EventArgs e)
+ {
+lblSelect.Text = "In DDL you have Selected " +
+DropDownList1.SelectedValue + "<br/>";
+ foreach (ListItem item in CheckBoxList1.Items)
+ {
+ if (item.Selected == true)
+ {
+lblSelect.Text += "In CBL you have Selected " +
+item.Value + "<br/>";
+ }
+ }
+ }
+}
+
+
+
+File2:-Default.aspx
+
+
+
+<%@ Page Language="C#" AutoEventWireup="true"
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<html>
+<head runat="server">
+ <title></title>
+</head>
+<body>
+ <form id="form1" runat="server">
+ <div>
+ <asp:DropDownList ID="DropDownList1" runat="server">
+ <asp:ListItem>C#</asp:ListItem>
+ <asp:ListItem>VB</asp:ListItem>
+Page No.51
+ <asp:ListItem>CSS</asp:ListItem>
+ </asp:DropDownList>
+ <br />
+ <br />
+ <asp:CheckBoxList ID="CheckBoxList1" runat="server">
+ <asp:ListItem>C#</asp:ListItem>
+ <asp:ListItem>VB</asp:ListItem>
+ <asp:ListItem>CSS</asp:ListItem>
+ </asp:CheckBoxList>
+ <br />
+ <br />
+ <asp:Button ID="btnSelect"
+runat="server" onclick="btnSelect_Click" Text="Select" />
+ <br />
+ <br />
+ <asp:Label ID="lblSelect" runat="server"></asp:Label>
+ </div>
+ </form>
+</body>
+</html>
+OUTPUT:
+Page No.52
+
+
+
+2) Create App_Code folder for a Calculator.
+File 1:-Default.aspx
+<%@ Page Language="C#" AutoEventWireup="true"
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<!DOCTYPE html PUBLIC "-
+//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+ <title></title>
+ <style type="text/css">
+ .style1
+ {
+ width: 100%;
+ }
+ .style2
+ {
+ }
+ .style3
+ {
+ width: 154px;
+ }
+ </style>
+</head>
+<body>
+ <form id="form1" runat="server">
+ <div>
+ <table class="style1">
+ <tr>
+ <td class="style2">
+ <asp:TextBox ID="txtNo1" runat="server"></asp:TextBox>
+ </td>
+ <td class="style3">
+ <asp:DropDownList ID="DropDownList1" runat="server">
+ <asp:ListItem>+</asp:ListItem>
+ <asp:ListItem>-</asp:ListItem>
+Page No.53
+ <asp:ListItem>*</asp:ListItem>
+ <asp:ListItem>/</asp:ListItem>
+ </asp:DropDownList>
+ </td>
+ <td>
+ <asp:TextBox ID="txtNo2" runat="server"></asp:TextBox>
+ </td>
+ </tr>
+ <tr>
+ <td class="style2">
+ &nbsp;</td>
+ <td class="style3">
+ <asp:Button ID="btncalculate"
+runat="server" onclick="btncalculate_Click" Text="calculate"
+/>
+ </td>
+ <td>
+ &nbsp;</td>
+ </tr>
+ <tr>
+ <td class="style2" colspan="3">
+ <asp:Label ID="lblResult" runat="server"></asp:Label>
+ </td>
+ </tr>
+ </table>
+</div>
+ </form>
+</body>
+</html>
+
+
+
+File 2:-Default.aspx.cs
+
+using System;
+public partial class _Default : System.Web.UI.Page
+{
+ protected void btncalculate_Click(object sender, EventArgs e)
+ {
+ if (txtNo1.Text.Length > 0 && txtNo2.Text.Length > 0)
+ {
+ double Result=0;
+Page No.54
+ double no1 = Convert.ToDouble(txtNo1.Text);
+ double no2 = Convert.ToDouble(txtNo2.Text);
+ calculator calc = new calculator();
+ switch (DropDownList1.SelectedValue)
+ {
+ case "+":
+ Result = calc.Add(no1, no2);
+ break;
+ case "-":
+ Result = calc.Subtract(no1, no2);
+ break;
+ case "*":
+ Result = calc.Multiply(no1, no2);
+ break;
+ case "/":
+ Result = calc.Divide(no1, no2);
+ break;
+ }
+ lblResult.Text = "The result is" + Result.ToString();
+ }
+ else
+ {
+ lblResult.Text = "plese enter the value(s)";
+ }
+}
+}
+
+
+
+File 3:-App_Code/calculator.cs
+using System;
+public class calculator
+{
+ public double Add(double a, double b)
+ {
+ return a + b;
+ }
+ public double Subtract(double a, double b)
+ {
+ return a - b;
+ }
+Page No.55
+ public double Multiply(double a, double b)
+ {
+ return a * b;
+ }
+ public double Divide(double a, double b)
+ {
+ return a / b;
+ }
+}
+OUPUT:
+Page No.56
+Practical No.6
+
+
+
+Programs using Language Integrated Query (LINQ)
+
+
+
+1) Implement the exercise on LINQ.
+using System;
+using System.Linq;
+class Program
+{
+ static void Main(string[] args)
+ {
+// Array 1.
+var ints1 = new int[3];
+ints1[0] = 4;
+ints1[1] = 3;
+ints1[2] = 0;
+// Array 2.
+var ints2 = new int[3];
+ints2[0] = 5;
+ints2[1] = 4;
+ints2[2] = 2;
+{
+ // Join with method call.
+ var result = ints1.Join<int, int, int, int>(ints2,
+x => x + 1,
+y => y,
+(x, y) => x);
+ // Display results.
+ foreach (var r in result)
+ {
+Console.WriteLine(r);
+ }
+}
+{
+ // Join with query expression.
+ var result = from t in ints1
+join x in ints2 on (t + 1) equals x
+Page No.57
+select t;
+ // Display results.
+ foreach (var r in result)
+ {
+Console.WriteLine(r);
+ }
+}
+ Console.ReadKey();
+ }
+}
+OUTPUT:
+Page No.58
+Practical No.7
+
+
+
+Implement the exercise on AJAX
+Table Property
+Control Property Values
+TextBox1 ID txtEmailID
+Text (Blank)
+TextBox1 ID txtPassword
+Text (Blank)
+TextMode Password
+Label ID lblMessage
+Text Logged In…
+Visible False
+Button ID btnSend
+Text Send
+RequiredFieldValidator1 ID RequiredFieldValidator1
+ControlToValidate txtEmailID
+Display Dynamic
+ErrorMessage Please enter EmailID
+RegularExpressionValidator1 ID RegularExpressionValidator1
+ControlToValidate txtEmailID
+Display Dynamic
+ErrorMessage Wrong format of EmailID
+ValidationExpression Internet e-mail address
+RequiredFieldValidator1 ID RequiredFieldValidator1
+ControlToValidate txtPassword
+Display Dynamic
+ErrorMessage Please enter Password
+Page No.59
+
+
+
+
+
+File1:-Default.aspx
+<%@ Page Language="C#" AutoEventWireup="true"
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+ <title></title>
+ <style type="text/css">
+ .style1
+ {
+ width: 100%;
+ }
+ .style2
+ {
+ width: 158px;
+ }
+ .style3
+ {
+ width: 152px;
+ }
+ .PleaseWait
+ {
+ height:32px;
+ width:500px;
+ background-image:url(Image/PleaseWait.gif);
+ background-repeat:no-repeat;
+ padding-left:40px;
+ line-height:32px;
+ }
+ </style>
+</head>
+<body>
+ <form id="form1" runat="server">
+ <div>
+
+ <asp:ScriptManager ID="ScriptManager1" runat="server">
+Page No.60
+ </asp:ScriptManager>
+ <br />
+ <br />
+ <br />
+ <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+ <ContentTemplate>
+ <table class="style1">
+ <tr>
+ <td class="style2">
+ Email Id</td>
+ <td class="style3">
+ <asp:TextBox ID="txtEmailID"
+runat="server"></asp:TextBox>
+ </td>
+ <td>
+ <asp:RequiredFieldValidator ID="RequiredFieldValidator1"
+runat="server"
+ ControlToValidate="txtEmailID" Display="Dynamic"
+ ErrorMessage="Please Enter Email
+ID"></asp:RequiredFieldValidator>
+&nbsp;
+ <asp:RegularExpressionValidator
+ID="RegularExpressionValidator1" runat="server"
+ ControlToValidate="txtEmailID" Display="Dynamic"
+ ErrorMessage="Wrong Format of Email Id"
+ ValidationExpression="\w+([-+.']\w+)*@\w+([-
+.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+ </td>
+ </tr>
+ <tr>
+ <td class="style2">
+ Password</td>
+ <td class="style3">
+ <asp:TextBox ID="txtPassword" runat="server"
+TextMode="Password"></asp:TextBox>
+ </td>
+ <td>
+ <asp:RequiredFieldValidator ID="RequiredFieldValidator2"
+runat="server"
+ ControlToValidate="txtPassword" Display="Dynamic" 
+Page No.61
+ ErrorMessage="Please Enter
+Password"></asp:RequiredFieldValidator>
+ </td>
+ </tr>
+ <tr>
+ <td class="style2">
+ <asp:Label ID="lblMessage" runat="server" Text="Logged
+In...." Visible="False"></asp:Label>
+ </td>
+ <td class="style3">
+ <asp:Button ID="btnSend" runat="server" Text="Send"
+onclick="btnSend_Click" />
+ </td>
+ <td>
+ &nbsp;</td>
+ </tr>
+ <tr>
+ <td class="style2">
+ &nbsp;</td>
+ <td class="style3">
+ &nbsp;</td>
+ <td>
+ &nbsp;</td>
+ </tr>
+ </table>
+ </ContentTemplate>
+ </asp:UpdatePanel>
+ <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+ <ProgressTemplate>
+ <div class="PleaseWait">
+ Please Wait......
+ </div>
+ </ProgressTemplate>
+ </asp:UpdateProgress>
+ </div></form>
+</body>
+</html>
+Page No.62
+
+
+
+File2:-Default.aspx.cs
+using System;
+public partial class _Default : System.Web.UI.Page
+{
+ protected void btnSend_Click(object sender, EventArgs e)
+ {
+ lblMessage.Visible = true;
+ txtEmailID.Text = "";
+ System.Threading.Thread.Sleep(5000);
+ }
+}
+Page No.63
+OUTPUT:
+Page No.64
+Practical No. 8
+
+
+
+Implement the exercise on JQuery.
+
+
+
+File1:-MasterPage.master
+<%@ Master Language="C#" AutoEventWireup="true"
+CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+ <title></title>
+ <asp:ContentPlaceHolder id="head" runat="server">
+ </asp:ContentPlaceHolder>
+</head>
+<body>
+ <form id="form1" runat="server">
+ <asp:ScriptManager ID="ScriptManager1"
+ runat="server" EnablePageMethods="true">
+ <Scripts>
+ <asp:ScriptReference Path="~/JavaScript Files/jquery-1.4.1.min.js" />
+ </Scripts>
+ </asp:ScriptManager>
+ <div id="Header"> Header Goes Hear</div>
+ <div id="MainContent">
+ <asp:ContentPlaceHolder id="cpMainContent" runat="server">
+ </asp:ContentPlaceHolder>
+ </div>
+ <div id="Sidebar">Sidebar Goes Here</div>
+ <div id="Footer">Footer Goes Here</div>
+ <asp:ContentPlaceHolder id="cpClientScript" runat="server">
+ </asp:ContentPlaceHolder>
+ </form>
+</body>
+</html>
+Page No.65
+
+
+
+File2:-Default.aspx
+<%@ Page Title="" Language="C#"
+MasterPageFile="~/MasterPage.master" AutoEventWireup="true"
+CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head"
+Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="cpMainContent"
+Runat="Server">
+<h1>Basic Selectors</h1>
+ <div class="SampleClass">I am a div tag.</div>
+</asp:Content>
+<asp:Content ID="Content3" ContentPlaceHolderID="cpClientScript"
+Runat="Server">
+<script type="text/javascript">
+ $(function () {
+$('*').css('color', 'Green');
+$('#Footer').css('border-bottom', '2px solid black');
+$('h1').bind('click', function () { alert('Hello World') });
+$('.SampleClass').addClass('PleaseWait').hide(1000);
+$('#Footer, #Header').slideUp('slow').slideDown('slow');
+ $('#Sidebar').fadeTo(100000, 0.1); });
+ </script>
+</asp:Content>
+Page No.66
+OUTPUT:
+
