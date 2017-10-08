@@ -1,0 +1,271 @@
+Practical => To add a user
+
+
+#user add abc(username)
+
+#passwd username(abc)
+ type password
+
+#su(switch user) abc(username you created)
+
+#su root
+type user pwd
+
+Prcatical => NFS server
+*Terminal One*
+ 
+check IP address
+#ifconfig (check eth0---inet addr )
+
+check NFS pkg
+# rpm -qa | grep  nfs (if installed return the version no.)
+
+#cd /root
+
+#pwd (present working directory)
+
+#mkdir mynfs1
+
+#cd mynfs1
+
+#touch s1 s2
+
+#cat>t1.txt
+type something in file
+(press ctrl+D ) 
+
+#vi /etc/exports
+type:
+/root/nfsserver*(rw,sync)
+/root/mynfs1*(rw,sync)
+
+click=>esc type=>:wq! 
+
+#service nfs start
+
+#service nfs restart
+
+#service iptables stop (to stop the firewall)
+
+#service iptables status(to check if firewall stop)
+
+#chmod -r 777 /root/mynfs1
+
+*Open the 2 terminal*
+
+#cd /home
+
+#mkdir client
+
+Go on Terminal 1 and type   
+#ifconfig (check eth0---inet addr)(to know ipaddress)
+			
+			  (ipaddress)		
+#mount -t nfs 10.0.2.15:/root/mynfs1 /home/client
+
+#cd client 
+
+#ls
+
+Practical= to reject the input through SSH
+
+# iptables -I INPUT -p --dport 22 -s 10.0.2.15 -j REJECT
+
+# service iptables save
+
+# service iptables start 
+
+# iptables -L
+
+
+Practical => Immutable attribute for a file 
+
+# cd /home 
+
+# cat > t4.txt 
+type any thing 
+(press ctrl+D )
+
+# chattr +i t4.txt
+
+# lsattr t4.txt
+(now go and check in directory)
+
+# chattr -i t4.txt (to remove)
+
+
+# lsattr t4.txt
+(now go and check in directory)
+
+Practical => Apache 
+
+# rpm -qa | grep httpd 
+
+# cd /var/www/html
+
+# cat>index.html 
+<html>
+<body>
+abc
+</body>
+</html>
+(press ctrl+D )
+
+# service httpd start 
+
+# service httpd restart
+
+GO TO Browser
+
+type in address bar and press enter
+http://10.0.2.15(your ip)/ 
+
+
+Practical => FTP server 
+
+# cd /root 
+
+check IP address
+#ifconfig (check eth0---inet addr )
+
+# rpm -qa | grep vsftpd
+
+# vi /etc/vsftpd/vsftpd.comf
+
+remove # before anonymous_enable=YES  
+
+click=>esc type=>:wq!
+
+# getsebool -a | grep ftp
+
+# setsebool -P allow_ftpd_annon_write on
+
+(check if above service is on)
+# getsebool -a | grep ftp 
+
+(check ownership)
+# ls -ldz /var/ftp/pub
+
+# chown ftp /var/ftp/pub
+ 
+(check ownership again)
+# ls -ldz /var/ftp/pub 
+ 
+# cd /var/ftp/pub
+
+# touch t1,t2
+
+# cat>t3.txt
+Hello
+(press ctrl+D )
+
+# service vsftpd start
+
+# service vsftpd restart
+
+GO TO Browser
+
+type in address bar and press enter
+ftp://10.0.2.15(your ip)/pub/
+
+Practical => Samba Server
+
+# cd /root
+
+# cd /home
+
+# mkdir sambashare
+
+# cd sambashare
+
+# touch s1,s2
+
+# cat>t3.txt
+abc 
+(press ctrl+D)
+
+#vi /etc/samba/smb.conf
+[global]
+interfaces = lo eth0 10.0.2.15/24
+hosts allow = 127. 10.0.2.(only three )
+
+[public]
+copy all the things from public 
+paste
+change public => samba  
+remove 
+(press esc type :wq!)
+
+# useradd sambauser
+
+# smbpasswd -a sambauser
+
+# service smb start
+
+# service smb restart
+ 
+# getsebool -a | grep samba 
+
+# setsebool -P samba_enable_home_dirs on
+
+# service smb start
+
+# service smb restart
+ 
+GO to windows 
+
+in the run
+
+type //10.0.2.15
+
+Practical => SUDO
+
+# useradd xyz
+
+# passwd xyz 
+ 
+# vi /etc/sudoers
+find Allow roots to run cmd and type
+xyz ALL=(ALL) ALL
+
+# su xyz
+
+# sudo /usr/sbin/useradd alpha01
+
+# confirm pwd 
+
+# system => Adminstration => User and group  
+ 
+Practical => squid
+
+# rpm -qa | grep squid   
+ 
+# chkconfig squid on
+
+# service squid restart
+
+# vi /etc/squid/squid.conf
+	[#insert your own rules]
+	Acl network src 10.0.2.15
+	Acl bad url_regx.google.comf
+	http_access deny bad
+	http_access deny all
+	[#squid listens to port 3128]
+	http_port 8080
+(press esc type :wq!)	
+
+# service squid restart
+
+GO TO Browser
+Edit=>prefrence=>advanced=>network=>settings=>enter sys ip address 
+
+Practical => Password chaining policy
+
+#useradd alpha
+
+#passwd alpha
+(set password)
+
+# chage -m 7 -M 7 -E 12/10/17 -W 7
+
+# chage -l alpha 
